@@ -42,4 +42,13 @@ val Interaction: State = state {
         furhat.glance(it)
     }
 
+    //Finish conversation after a delay. We can adjust the delay as we want
+    onTime(delay=120000) {
+        furhat.say("Alright, your Swedish is not too bad. " +
+                "There is still some work to be done though. " +
+                "But I am a bit tired now and need my beauty sleep. " +
+                "It’s been really nice to meet you. Have a nice day")
+        goto(Idle)
+    }
+
 }

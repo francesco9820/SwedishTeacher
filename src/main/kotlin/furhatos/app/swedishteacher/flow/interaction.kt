@@ -3,6 +3,10 @@ package furhatos.app.swedishteacher.flow
 import furhatos.nlu.common.*
 import furhatos.flow.kotlin.*
 
+/*
+We can use Options state as the parent for other states,
+in order to catch other types of responses
+*/
 val Options =  state(Interaction){
     onResponse {
         println("Caught response not matching any of my intents nr 2")
@@ -13,6 +17,7 @@ val Options =  state(Interaction){
     }
 }
 
+//capturing user name
 val RequestName: State = state(parent = Options){
     onEntry {
         furhat.ask("What may I call you?")
@@ -25,6 +30,7 @@ val RequestName: State = state(parent = Options){
     }
 }
 
+//greetings
 val Start : State = state(Interaction) {
 
     onEntry {
