@@ -3,8 +3,8 @@ package furhatos.app.swedishteacher.nlu
 
 import furhatos.nlu.EnumEntity
 import furhatos.nlu.Intent
-import furhatos.nlu.ListEntity
 import furhatos.util.Language
+
 
 
 //Vocabulary type entity
@@ -14,14 +14,15 @@ class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
     }
 }
 
-class ChooseVocabularyType(var vocabularyType : VocabTypeList? = null): Intent(){
+//intent for choosing a certain vocabulary type to practice
+class ChooseVocabularyType(var vocabularyType : VocabularyType? = null): Intent(){
     override fun getExamples(lang: Language): List<String> {
         return listOf("@vocabularyType", "I want @vocabularyType", "I would like to practice @vocabularyType",
             "I want to learn @vocabularyType", "I want @vocabularyType", "Teach me @vocabularyType")
     }
 }
 
-
+//intent for requesting all available vocabulary types
 class RequestVocabularyTypes: Intent() {
     override fun getExamples(lang: Language): List<String> {
         return listOf("What options do you have?",
@@ -35,5 +36,3 @@ class RequestVocabularyTypes: Intent() {
         )
     }
 }
-
-class VocabTypeList : ListEntity<VocabularyType>()

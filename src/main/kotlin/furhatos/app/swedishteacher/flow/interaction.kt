@@ -19,20 +19,14 @@ val Options =  state(Interaction){
     onResponse<ChooseVocabularyType> {
         val vocabType = it.intent.vocabularyType
         if (vocabType != null) {
-            random(
-                {furhat.say("${vocabType.text}, that is a decent choice.")},
-                {furhat.say("Nice, I am pretty good at ${vocabType.text}!")},
-                {furhat.say("Oh wow, ${vocabType.text} you say. Let's go for it")}
-            )
-
-        //goto function for choosing the vocab type
+            goto(registerVocabularyType(vocabType))
         }
         else {
             propagate()
         }
     }
 
-    //If the user want to know what vocabulary words are available
+    //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
         furhat.say("I know so many words")
         furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).joinToString(", ")}")
@@ -40,6 +34,36 @@ val Options =  state(Interaction){
     }
 }
 
+fun teachingVocabulary() : State = state(Options){
+    onEntry {
+        //Ask something like What is GREEN i Swedish
+        furhat.ask("What is the word for... in Swedish")
+
+    }
+
+    /*
+    //the user proposes answer which is recognized,
+    the bot should say that it is correct
+    otherwise let the user try again if they want
+     */
+
+}
+
+
+
+fun registerVocabularyType(vocabularyType: VocabularyType) : State = state(Options) {
+    onEntry {
+        random(
+            {furhat.say("${vocabularyType.text}, that is a decent choice.")},
+            {furhat.say("Nice, I am pretty good at ${vocabularyType.text}!")},
+            {furhat.say("Oh wow, ${vocabularyType.text} you say. Let's go for it")}
+            )
+        //storing the chosen vocabulary type on the user profile
+        users.current.currentVocabularyType.vocabType = vocabularyType
+        furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
+        goto(teachingVocabulary())
+    }
+}
 
 val IntroVocabulary : State = state(parent = Options){
     onEntry {
