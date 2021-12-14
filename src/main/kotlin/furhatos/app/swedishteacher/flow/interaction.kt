@@ -16,25 +16,28 @@ val Options =  state(Interaction){
         goto(Idle)
     }
 
+    onResponse<ChooseVocabularyType> {
+        val vocabType = it.intent.vocabularyType
+        if (vocabType != null) {
+            random(
+                {furhat.say("${vocabType.text}, that is a decent choice.")},
+                {furhat.say("Nice, I am pretty good at ${vocabType.text}!")},
+                {furhat.say("Oh wow, ${vocabType.text} you say. Let's go for it")}
+            )
+
+        //goto function for choosing the vocab type
+        }
+        else {
+            propagate()
+        }
+    }
+
+    //If the user want to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
         furhat.say("I know so many words")
         furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).joinToString(", ")}")
-        //furhat.ask("Which one would you want to practice?")
-    // If user asks what types of vocabulary are available
-       // Should list all types of vocabulary like colors, clothing etc
+        furhat.ask("Which one would you want to practice?")
     }
-    onResponse {
-        println("Caught response not matching any of my intents nr 2")
-    }
-
-
-    /*
-    onResponse<ChooseVocabulary>{
-        If users chooses a vocabulary type,
-        the type should be sent to a function that stores it on the user
-    }
-     */
-
 }
 
 
@@ -42,6 +45,10 @@ val IntroVocabulary : State = state(parent = Options){
     onEntry {
         furhat.ask("Alright, are you ready to become a kick-ass Swedish speaker?")
     }
+    onReentry {
+        furhat.ask("Wanna practice some Swedish?")
+    }
+
     onResponse<Yes> {
         furhat.ask("What type of Swedish vocabulary do you want to practice?")
     }
