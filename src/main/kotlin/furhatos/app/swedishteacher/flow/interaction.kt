@@ -6,7 +6,7 @@ import furhatos.flow.kotlin.*
 import furhatos.util.Language
 
 /*
-We can use Options state as the parent for other states,
+We can use Options state as a parent
 in order to catch other types of responses
 */
 val Options =  state(Interaction){
@@ -19,12 +19,29 @@ val Options =  state(Interaction){
     onResponse<ChooseVocabularyType> {
         val vocabType = it.intent.vocabularyType
         if (vocabType != null) {
+            random(
+                {furhat.say("${vocabType.text}, that is a decent choice.")},
+                {furhat.say("Nice, I am pretty good at ${vocabType.text}!")},
+                {furhat.say("Oh wow, ${vocabType.text} you say. Let's go for it")}
+            )
             goto(registerVocabularyType(vocabType))
         }
         else {
             propagate()
         }
     }
+    onResponse<DontKnow> {
+        goto(vocabularyTypeRecommendation())
+    }
+    /*
+    TO DO:
+    Allow the user to change to vocabulary type during learning
+
+    onResponse<RequestVocabularyRecommendation> {
+        goto(vocabularyTypeRecommendation())
+    }
+
+     */
 
     //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
@@ -34,6 +51,32 @@ val Options =  state(Interaction){
     }
 }
 
+fun vocabularyTypeRecommendation() : State = state(Options){
+    onEntry {
+        furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).random()}")
+        furhat.ask("Would you like that?")
+
+    //TO DO: should also make sure to not give a suggestion that the user
+    // is currently learning or has learned
+
+    }
+    onResponse<Yes> {
+
+    //TO DO:
+    // should take the suggestion and send it to the function below
+    //goto(registerVocabularyType(vocabType))
+
+    }
+    onResponse<No> {
+
+    //TO DO:
+    // should randomize another suggestion
+    // but make sure to not give the same suggestions as already given...
+
+    }
+}
+
+
 fun teachingVocabulary() : State = state(Options){
     onEntry {
         //Ask something like What is GREEN i Swedish
@@ -42,7 +85,8 @@ fun teachingVocabulary() : State = state(Options){
     }
 
     /*
-    //the user proposes answer which is recognized,
+    TO DO:
+    the user proposes answer which is recognized,
     the bot should say that it is correct
     otherwise let the user try again if they want
      */
@@ -53,11 +97,6 @@ fun teachingVocabulary() : State = state(Options){
 
 fun registerVocabularyType(vocabularyType: VocabularyType) : State = state(Options) {
     onEntry {
-        random(
-            {furhat.say("${vocabularyType.text}, that is a decent choice.")},
-            {furhat.say("Nice, I am pretty good at ${vocabularyType.text}!")},
-            {furhat.say("Oh wow, ${vocabularyType.text} you say. Let's go for it")}
-            )
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
         furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
@@ -65,12 +104,12 @@ fun registerVocabularyType(vocabularyType: VocabularyType) : State = state(Optio
     }
 }
 
-val IntroVocabulary : State = state(parent = Options){
+val IntroVocabulary : State = state(Options){
     onEntry {
         furhat.ask("Alright, are you ready to become a kick-ass Swedish speaker?")
     }
     onReentry {
-        furhat.ask("Wanna practice some Swedish?")
+        furhat.ask("Wanna practice some Swedish vocabulary?")
     }
 
     onResponse<Yes> {
