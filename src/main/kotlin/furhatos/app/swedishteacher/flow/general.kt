@@ -47,7 +47,7 @@ val Interaction: State = state {
         furhat.say("Alright, your Swedish is not too bad. " +
                 "There is still some work to be done though. " +
                 "But I am a bit tired now and need my beauty sleep. " +
-                "It’s been really nice to meet you. Have a nice day")
+                "It’s been really nice to meet you. Have a nice day!")
         goto(Idle)
     }
 

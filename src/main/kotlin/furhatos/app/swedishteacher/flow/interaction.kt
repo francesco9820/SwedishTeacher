@@ -15,7 +15,23 @@ val Options =  state(Interaction){
         furhat.say("Alright, bye")
         goto(Idle)
     }
+
 }
+
+val IntroVocabulary : State = state(parent = Options){
+    onEntry {
+        furhat.ask("Alright, are you ready to become a kick-ass Swedish speaker?")
+    }
+    onResponse<Yes> {
+        //goto()
+    }
+    onResponse<No> {
+        furhat.say("We could also talk about the weather but I never go outside. " +
+                "So let’s stick to the stuff I am good at. ")
+        //goto()
+    }
+}
+
 
 //capturing user name
 val RequestName: State = state(parent = Options){
