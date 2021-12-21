@@ -14,6 +14,12 @@ class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
     }
 }
 
+class AnswerType : EnumEntity(stemming = true, speechRecPhrases = true){
+    override fun getEnum(lang: Language): List<String> {
+        return listOf("Byxor", "Fem", "Grön")
+    }
+}
+
 //intent for choosing a certain vocabulary type to practice
 class ChooseVocabularyType(var vocabularyType : VocabularyType? = null): Intent(){
     override fun getExamples(lang: Language): List<String> {
@@ -32,7 +38,29 @@ class RequestVocabularyTypes: Intent() {
             "Which words can you teach me?",
             "Which words do you know?",
             "What can you teach me?"
-
         )
     }
 }
+
+//change vocabulary type
+class ChangeVocabularyTypes: Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("I would like to change vocabulary",
+            "Can I choose another vocabulary?",
+            "Is it possible to change vocabulary?",
+            "Can we change vocabulary?"
+        )
+    }
+}
+
+//correct answers
+class CorrectAnswers(var correctAnswer : CorrectAnswers? = null): Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf("@correctAnswer",
+            "The answer is @correctAnswer",
+            "It is @correctAnswer"
+        )
+    }
+}
+
+

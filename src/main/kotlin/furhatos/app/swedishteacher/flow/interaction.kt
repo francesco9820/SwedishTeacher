@@ -24,24 +24,25 @@ val Options =  state(Interaction){
                 {furhat.say("Nice, I am pretty good at ${vocabType.text}!")},
                 {furhat.say("Oh wow, ${vocabType.text} you say. Let's go for it")}
             )
-            goto(registerVocabularyType(vocabType))
+            goto(registerVocabularyType(vocabType.toString()))
         }
         else {
             propagate()
         }
     }
     onResponse<DontKnow> {
-        goto(vocabularyTypeRecommendation())
+        furhat.ask("What type of Swedish vocabulary do you want to practice?")
     }
+
     /*
     TO DO:
     Allow the user to change to vocabulary type during learning
-
-    onResponse<RequestVocabularyRecommendation> {
-        goto(vocabularyTypeRecommendation())
+    */
+    onResponse<ChangeVocabularyTypes> {
+        goto(vocabularyTypeRecommendation(""))
     }
 
-     */
+
 
     //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
@@ -51,9 +52,13 @@ val Options =  state(Interaction){
     }
 }
 
-fun vocabularyTypeRecommendation() : State = state(Options){
+fun vocabularyTypeRecommendation(previous: String) : State = state(Options){
+    var vocType : String = ""
     onEntry {
-        furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).random()}")
+        do{
+            vocType = VocabularyType().getEnum(Language.ENGLISH_US).random()
+        }while (vocType.equals(previous))
+        furhat.say("We could practice ${vocType}")
         furhat.ask("Would you like that?")
 
     //TO DO: should also make sure to not give a suggestion that the user
@@ -64,15 +69,11 @@ fun vocabularyTypeRecommendation() : State = state(Options){
 
     //TO DO:
     // should take the suggestion and send it to the function below
-    //goto(registerVocabularyType(vocabType))
+        goto(registerVocabularyType(vocType))
 
     }
     onResponse<No> {
-
-    //TO DO:
-    // should randomize another suggestion
-    // but make sure to not give the same suggestions as already given...
-
+        goto(vocabularyTypeRecommendation(vocType))
     }
 }
 
@@ -80,8 +81,18 @@ fun vocabularyTypeRecommendation() : State = state(Options){
 fun teachingVocabulary() : State = state(Options){
     onEntry {
         //Ask something like What is GREEN i Swedish
-        furhat.ask("What is the word for... in Swedish")
+        var teacVoc = users.current.currentVocabularyType.vocabType
+        if(teacVoc.equals("colors")){
+            furhat.ask("What is the word for green in Swedish")
+        }else if(teacVoc.equals("clothing items")){
+            furhat.ask("What is the word for pants in Swedish")
+        }else if(teacVoc.equals("numbers")){
+            furhat.ask("What is the word for five in Swedish")
+        }
+    }
 
+    onResponse<CorrectAnswers> {
+        furhat.say("Yeah that's correct!!")
     }
 
     /*
@@ -95,7 +106,7 @@ fun teachingVocabulary() : State = state(Options){
 
 
 
-fun registerVocabularyType(vocabularyType: VocabularyType) : State = state(Options) {
+fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
     onEntry {
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
@@ -130,9 +141,14 @@ val RequestName: State = state(Interaction){
         furhat.ask("What may I call you?")
     }
     onResponse<PersonName> {
-        furhat.say("You have a lovely name " + it.intent)
+        var name = it.intent?.value
+        if (name != null) {
+            users.current.information.name = name
+        }
+        furhat.say("You have a lovely name " + name)
         goto(IntroVocabulary)
     }
+
     onResponse{
         furhat.say("Sorry, I am pretty bad with names actually. I’ll just call you buddy.")
         goto(IntroVocabulary)
