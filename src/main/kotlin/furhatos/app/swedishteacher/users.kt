@@ -7,6 +7,10 @@ class ChosenVocabularyType (
     var vocabType : String = ""
 )
 
+class QuestionType (
+    var qstType : String = ""
+)
+
 class UserData(
     var name : String = String()
 )
@@ -17,3 +21,6 @@ val User.currentVocabularyType : ChosenVocabularyType
 
 val User.information : UserData
     get() = data.getOrPut(UserData::class.qualifiedName, UserData())
+
+val User.currentQuestionType : QuestionType
+    get() = data.getOrPut(QuestionType::class.qualifiedName, QuestionType())

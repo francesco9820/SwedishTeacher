@@ -3,6 +3,8 @@ package furhatos.app.swedishteacher.flow
 import furhatos.nlu.common.*
 import furhatos.app.swedishteacher.nlu.*
 import furhatos.flow.kotlin.*
+import furhatos.gestures.Gestures
+import furhatos.skills.emotions.UserGestures
 import furhatos.util.Language
 
 /*
@@ -65,6 +67,10 @@ fun vocabularyTypeRecommendation(previous: String) : State = state(Options){
     // is currently learning or has learned
 
     }
+    onUserGesture(UserGestures.Smile) {
+        furhat.say("It looks like you are happy with this choice")
+        goto(registerVocabularyType(vocType))
+    }
     onResponse<Yes> {
 
     //TO DO:
@@ -83,16 +89,42 @@ fun teachingVocabulary() : State = state(Options){
         //Ask something like What is GREEN i Swedish
         var teacVoc = users.current.currentVocabularyType.vocabType
         if(teacVoc.equals("colors")){
+            users.current.currentQuestionType.qstType = teacVoc
+            //println(teacVoc)
             furhat.ask("What is the word for green in Swedish")
-        }else if(teacVoc.equals("clothing items")){
+        }else if(teacVoc.equals("clothing items") || teacVoc.equals("clothing item")){
+            users.current.currentQuestionType.qstType = teacVoc
             furhat.ask("What is the word for pants in Swedish")
         }else if(teacVoc.equals("numbers")){
+            users.current.currentQuestionType.qstType = teacVoc
             furhat.ask("What is the word for five in Swedish")
         }
+        //furhat.setInputLanguage(Language.SWEDISH)
     }
 
-    onResponse<CorrectAnswers> {
-        furhat.say("Yeah that's correct!!")
+    onResponse<ChangeVocabularyTypes> {
+        goto(vocabularyTypeRecommendation(""))
+    }
+
+    onResponse<PossiblyCorrectAnswers> {
+        val answer = it.intent.correctAnswer?.text
+        val questionType = users.current.currentQuestionType.qstType
+        if(answer != null){
+            if(questionType.equals("colors") && answer.equals("Grand")){
+                furhat.say("Yeah that's correct!!")
+                goto(endSession())
+            }else if(questionType.equals("clothing items") && answer.equals("Big Sur")){
+                furhat.say("Yeah that's correct!!")
+                goto(endSession())
+            }else if(questionType.equals("numbers") && answer.equals("Fem")){
+                furhat.say("Yeah that's correct!!")
+                goto(endSession())
+            }else{
+                furhat.say("The answer is incorrect. You can try again if you want")
+                goto(teachingVocabulary())
+            }
+        }
+
     }
 
     /*
@@ -104,6 +136,12 @@ fun teachingVocabulary() : State = state(Options){
 
 }
 
+fun endSession() : State = state(Options) {
+    onEntry {
+        furhat.say("We had a lot of fun together. This is the end of our session. See you another time!")
+        goto(Idle)
+    }
+}
 
 
 fun registerVocabularyType(vocabularyType: String) : State = state(Options) {

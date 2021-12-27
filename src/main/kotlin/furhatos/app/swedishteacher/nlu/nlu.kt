@@ -16,7 +16,8 @@ class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
 
 class AnswerType : EnumEntity(stemming = true, speechRecPhrases = true){
     override fun getEnum(lang: Language): List<String> {
-        return listOf("Byxor", "Fem", "Grön")
+        //return listOf("byxor", "fem", "grön")
+        return listOf("Big Sur", "fem", "grand")
     }
 }
 
@@ -54,12 +55,13 @@ class ChangeVocabularyTypes: Intent() {
 }
 
 //correct answers
-class CorrectAnswers(var correctAnswer : CorrectAnswers? = null): Intent() {
+class PossiblyCorrectAnswers(var correctAnswer : AnswerType? = null): Intent() {
     override fun getExamples(lang: Language): List<String> {
-        return listOf("@correctAnswer",
+        /*return listOf("@correctAnswer",
             "The answer is @correctAnswer",
             "It is @correctAnswer"
-        )
+        )*/
+        return listOf("@correctAnswer")
     }
 }
 
