@@ -16,8 +16,8 @@ class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
 
 class AnswerType : EnumEntity(stemming = true, speechRecPhrases = true){
     override fun getEnum(lang: Language): List<String> {
-        //return listOf("byxor", "fem", "grön")
-        return listOf("Big Sur", "fem", "grand")
+        return listOf("byxor", "fem", "grön")
+        //return listOf("Big Sur", "fem", "grand")
     }
 }
 

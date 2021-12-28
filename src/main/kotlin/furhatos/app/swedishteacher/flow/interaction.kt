@@ -1,10 +1,12 @@
 package furhatos.app.swedishteacher.flow
 
+import cc.mallet.util.CommandOption
 import furhatos.nlu.common.*
 import furhatos.app.swedishteacher.nlu.*
 import furhatos.flow.kotlin.*
 import furhatos.gestures.Gestures
 import furhatos.skills.emotions.UserGestures
+import furhatos.util.Gender
 import furhatos.util.Language
 
 /*
@@ -84,20 +86,24 @@ fun vocabularyTypeRecommendation(previous: String) : State = state(Options){
 }
 
 
-fun teachingVocabulary() : State = state(Options){
+fun teachingVocabulary(attempt: Int) : State = state(Options){
+    var a = attempt
     onEntry {
         //Ask something like What is GREEN i Swedish
         var teacVoc = users.current.currentVocabularyType.vocabType
         if(teacVoc.equals("colors")){
             users.current.currentQuestionType.qstType = teacVoc
+            furhat.setInputLanguage(Language.SWEDISH)
             //println(teacVoc)
-            furhat.ask("What is the word for green in Swedish")
+            furhat.ask("You have ${2-a} attempts left. What is the word for green in Swedish")
         }else if(teacVoc.equals("clothing items") || teacVoc.equals("clothing item")){
             users.current.currentQuestionType.qstType = teacVoc
-            furhat.ask("What is the word for pants in Swedish")
+            furhat.setInputLanguage(Language.SWEDISH)
+            furhat.ask("You have ${2-a} attempts left. What is the word for pants in Swedish")
         }else if(teacVoc.equals("numbers")){
             users.current.currentQuestionType.qstType = teacVoc
-            furhat.ask("What is the word for five in Swedish")
+            furhat.setInputLanguage(Language.SWEDISH)
+            furhat.ask("You have ${2-a} attempts left. What is the word for five in Swedish")
         }
         //furhat.setInputLanguage(Language.SWEDISH)
     }
@@ -110,21 +116,49 @@ fun teachingVocabulary() : State = state(Options){
         val answer = it.intent.correctAnswer?.text
         val questionType = users.current.currentQuestionType.qstType
         if(answer != null){
-            if(questionType.equals("colors") && answer.equals("Grand")){
+            if(questionType.equals("colors") && answer.equals("grön")){
                 furhat.say("Yeah that's correct!!")
                 goto(endSession())
-            }else if(questionType.equals("clothing items") && answer.equals("Big Sur")){
+            }else if(questionType.equals("clothing items") && answer.equals("byxor")){
                 furhat.say("Yeah that's correct!!")
                 goto(endSession())
-            }else if(questionType.equals("numbers") && answer.equals("Fem")){
+            }else if(questionType.equals("numbers") && answer.equals("fem")){
                 furhat.say("Yeah that's correct!!")
                 goto(endSession())
-            }else{
-                furhat.say("The answer is incorrect. You can try again if you want")
-                goto(teachingVocabulary())
+            }else if(a==2 && questionType.equals("colors")){
+                furhat.say("The total attempts available are terminated. The correct word for green in Swedish is")
+                furhat.setVoice(Language.SWEDISH, Gender.MALE)
+                furhat.say("grön")
+                furhat.setVoice(Language.ENGLISH_US, Gender.MALE)
+                goto(endSession())
+            }else if(a==2 && questionType.equals("clothing items")){
+                furhat.say("The total attempts available are terminated. The correct word for pants in Swedish is")
+                furhat.setVoice(Language.SWEDISH, Gender.MALE)
+                furhat.say("byxor")
+                furhat.setVoice(Language.ENGLISH_US)
+                goto(endSession())
+            }else if(a==2 && questionType.equals("numbers")){
+                furhat.say("The total attempts available are terminated. The correct word for five in Swedish is")
+                furhat.setVoice(Language.SWEDISH, Gender.MALE)
+                furhat.say("fem")
+                furhat.setVoice(Language.ENGLISH_US, Gender.MALE)
+                goto(endSession())
+            }
+            else if(a<2){
+                a++
+                furhat.setInputLanguage(Language.ENGLISH_US)
+                furhat.ask("The answer is incorrect. Let's try another time, is that okay for you?")
             }
         }
 
+    }
+
+    onResponse<Yes> {
+        goto(teachingVocabulary(a))
+    }
+
+    onResponse<No> {
+        goto(endSession())
     }
 
     /*
@@ -133,12 +167,12 @@ fun teachingVocabulary() : State = state(Options){
     the bot should say that it is correct
     otherwise let the user try again if they want
      */
-
 }
 
 fun endSession() : State = state(Options) {
     onEntry {
         furhat.say("We had a lot of fun together. This is the end of our session. See you another time!")
+        furhat.setInputLanguage(Language.ENGLISH_US)
         goto(Idle)
     }
 }
@@ -149,7 +183,7 @@ fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
         furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
-        goto(teachingVocabulary())
+        goto(teachingVocabulary(0))
     }
 }
 
