@@ -117,9 +117,10 @@ try:
 
 			#find max indexed array
 			max_index = np.argmax(predictions[0])
-			second_index = np.argmax(predictions[1])
-			
+			second_index = np.argmax(np.delete(predictions[0], max_index))
+			#print(emotions[second_index])
 			predicted_emotion = emotions[max_index]
+			second_predicted_emotion = emotions[second_index]
 			with open("predicted_emotion.txt", "a") as f:
 				f.write(predicted_emotion)
 				f.write("\n")
