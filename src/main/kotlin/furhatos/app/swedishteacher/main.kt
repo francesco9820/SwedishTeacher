@@ -11,5 +11,8 @@ class SwedishteacherSkill : Skill() {
 }
 
 fun main(args: Array<String>) {
+    val path = System.getProperty("user.dir")
+
+    println("Working Directory = $path")
     Skill.main(args)
 }

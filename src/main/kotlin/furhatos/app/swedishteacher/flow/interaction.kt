@@ -8,6 +8,7 @@ import furhatos.gestures.Gestures
 import furhatos.skills.emotions.UserGestures
 import furhatos.util.Gender
 import furhatos.util.Language
+import java.io.File
 
 /*
 We can use Options state as a parent
@@ -50,6 +51,15 @@ val Options =  state(Interaction){
 
     //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
+        var fileContents = readFileAsLinesUsingReadLines("Video_Chat_Emotion_Capture/predicted_emotion.txt")
+        var emotion = fileContents.last()
+        if(emotion.equals("fear")){
+            furhat.say("There is no need to be scared")
+        }else if(emotion.equals("sad")){
+            furhat.say("Don't be sad you should be happy to practise Swedish with me")
+        }else if(emotion.equals("happy")){
+            furhat.say("Seeing you happy makes me really happy as well!")
+        }
         furhat.say("I know so many words")
         furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).joinToString(", ")}")
         furhat.ask("Which one would you want to practice?")
@@ -210,6 +220,15 @@ val IntroVocabulary : State = state(Options){
 //name still needs to be stored on the user.
 val RequestName: State = state(Interaction){
     onEntry {
+        var fileContents = readFileAsLinesUsingReadLines("Video_Chat_Emotion_Capture/predicted_emotion.txt")
+        var emotion = fileContents.last()
+        if(emotion.equals("fear")){
+            furhat.say("There is no need to be scared")
+        }else if(emotion.equals("sad")){
+            furhat.say("Don't be sad you should be happy to practise Swedish with me")
+        }else if(emotion.equals("happy")){
+            furhat.say("Seeing you happy makes me really happy as well!")
+        }
         furhat.ask("What may I call you?")
     }
     onResponse<PersonName> {
@@ -235,6 +254,7 @@ val Start : State = state(Interaction) {
             {furhat.ask("Hi there")},
             {furhat.ask("Hello")}
         )
+
     }
     onResponse<Greeting> {
         goto(RequestName)
@@ -244,3 +264,6 @@ val Start : State = state(Interaction) {
         goto(RequestName)
     }
 }
+
+fun readFileAsLinesUsingReadLines(fileName: String): List<String>
+        = File(fileName).readLines()
