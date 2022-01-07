@@ -1,0 +1,6 @@
+12:07:58 [Skill] INFO  Skill:138 - Connecting to Furhat server on 0.0.0.0:1932
+12:07:58 [SwedishteacherSkill] INFO  SwedishteacherSkill:165 - Starting skill
+12:08:03 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer
+12:08:03 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer
+12:08:03 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer
+12:08:25 [EventSystem] INFO  SwedishteacherSkill:183 - Terminating skill

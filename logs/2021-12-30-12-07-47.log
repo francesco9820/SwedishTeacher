@@ -1,0 +1,7 @@
+12:07:47 [Skill] INFO  Skill:138 - Connecting to Furhat server on 0.0.0.0:1932
+12:07:48 [SwedishteacherSkill] INFO  SwedishteacherSkill:165 - Starting skill
+12:07:48 [EventSystem] WARN  FurhatSpeech:136 - Cannot find voice Joey (en-US) - Amazon Polly
+12:07:48 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (en-US) - Unknown
+12:07:51 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer
+12:07:51 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer
+12:07:51 [pool-2-thread-1] ERROR IdfMultiIntentClassifier:249 - Could not find class for entity @swe in ProposedAnswer

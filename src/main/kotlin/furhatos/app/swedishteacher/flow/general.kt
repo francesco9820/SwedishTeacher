@@ -23,6 +23,11 @@ val Idle: State = state {
     }
 }
 
+val maxRounds = 5
+var rounds = 0
+var shouldChangeUser = true
+var playing = false
+
 val Interaction: State = state {
 
     onUserLeave(instant = true) {

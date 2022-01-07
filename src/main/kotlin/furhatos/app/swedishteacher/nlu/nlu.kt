@@ -1,7 +1,8 @@
 package furhatos.app.swedishteacher.nlu
 
-
+import furhatos.app.swedishteacher.questions.QuestionSet
 import furhatos.nlu.EnumEntity
+import furhatos.nlu.EnumItem
 import furhatos.nlu.Intent
 import furhatos.util.Language
 
@@ -53,7 +54,25 @@ class ChangeVocabularyTypes: Intent() {
         )
     }
 }
+class AnswerOption : EnumEntity {
 
+    var correct : Boolean = false
+
+    // Every entity and intent needs an empty constructor.
+    constructor() {
+    }
+
+    // Since we are overwriting the value, we need to use this custom constructor
+    constructor(correct : Boolean, value : String) {
+        this.correct = correct
+        this.value = value
+    }
+
+    override fun getEnumItems(lang: Language): List<EnumItem> {
+        return QuestionSet.current.options;
+    }
+
+}
 //correct answers
 class PossiblyCorrectAnswers(var correctAnswer : AnswerType? = null): Intent() {
     override fun getExamples(lang: Language): List<String> {
@@ -62,6 +81,26 @@ class PossiblyCorrectAnswers(var correctAnswer : AnswerType? = null): Intent() {
             "It is @correctAnswer"
         )*/
         return listOf("@correctAnswer")
+    }
+}
+
+class RequestRepeatQuestion : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+            "what was the question",
+            "can you repeat the question",
+            "what was the question again"
+        )
+    }
+}
+
+class RequestRepeatOptions : Intent() {
+    override fun getExamples(lang: Language): List<String> {
+        return listOf(
+            "what are the options",
+            "can you repeat the options",
+            "what was the options"
+        )
     }
 }
 

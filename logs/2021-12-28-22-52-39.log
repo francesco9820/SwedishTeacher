@@ -1,0 +1,16 @@
+22:52:39 [Skill] INFO  Skill:138 - Connecting to Furhat server on 0.0.0.0:1932
+22:52:39 [SwedishteacherSkill] INFO  SwedishteacherSkill:165 - Starting skill
+22:53:12 [SwedishteacherSkill] ERROR TriggerRunner: 33 - Error
+java.lang.ClassCastException: furhatos.nlu.DynamicIntentInstance cannot be cast to furhatos.app.swedishteacher.nlu.QAColors
+	at furhatos.app.swedishteacher.flow.InteractionKt$Options$1$2.invoke(interaction.kt:25)
+	at furhatos.app.swedishteacher.flow.InteractionKt$Options$1$2.invoke(interaction.kt)
+	at furhatos.flow.kotlin.TriggerRunner.run(TriggerRunner.kt:31)
+	at furhatos.flow.kotlin.Runner.runTrigger(Runner.kt:225)
+	at furhatos.flow.kotlin.Runner.runTrigger$default(Runner.kt:197)
+	at furhatos.flow.kotlin.StateRunner.run(StateRunner.kt:57)
+	at furhatos.flow.kotlin.Flow.tailRecRun(Flow.kt:147)
+	at furhatos.flow.kotlin.Flow.run(Flow.kt:111)
+	at furhatos.app.swedishteacher.SwedishteacherSkill.start(main.kt:9)
+	at furhatos.skills.Skill.initializeSkill(Skill.java:168)
+	at furhatos.skills.Skill.lambda$startSkill$2(Skill.java:226)
+	at java.lang.Thread.run(Thread.java:748)

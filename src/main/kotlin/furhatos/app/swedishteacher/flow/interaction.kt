@@ -1,6 +1,7 @@
 package furhatos.app.swedishteacher.flow
 
 import cc.mallet.util.CommandOption
+import furhatos.app.swedishteacher.questions.QuestionSet
 import furhatos.nlu.common.*
 import furhatos.app.swedishteacher.nlu.*
 import furhatos.flow.kotlin.*
@@ -95,7 +96,136 @@ fun vocabularyTypeRecommendation(previous: String) : State = state(Options){
     }
 }
 
+val AskQuestion: State = state(Options) {
+    var failedAttempts = 0
 
+    onEntry {
+        failedAttempts = 0
+
+        // Set speech rec phrases based on the current question's answers
+        furhat.setInputLanguage(Language.SWEDISH)
+        furhat.setSpeechRecPhrases(QuestionSet.current.speechPhrases)
+
+        // Ask the question followed by the options
+        furhat.ask(QuestionSet.current.text)
+    }
+
+    // Here we re-state the question
+    onReentry {
+        failedAttempts = 0
+        furhat.ask("The question was, ${QuestionSet.current.text}")
+    }
+
+    // User is answering with any of the alternatives
+    onResponse<AnswerOption> {
+        val answer = it.intent
+
+        // If the user answers correct, we up the user's score and congratulates the user
+        if (answer.correct) {
+            furhat.gesture(Gestures.Smile)
+            users.current.quiz.score++
+            random(
+                { furhat.say("Great! That was the ${furhat.voice.emphasis("right")}  answer, you now have a score of ${users.current.quiz.score}") },
+                { furhat.say("that was ${furhat.voice.emphasis("correct")}, you now have a score of ${users.current.quiz.score}") }
+            )
+            /*
+            If the user answers incorrect, we give another user the chance of answering if one is present in the game.
+            If we indeed ask another player, the furhat.ask() interrupts the rest of the handler.
+             */
+        } else {
+            furhat.gesture(Gestures.BrowFrown)
+            furhat.say("Sorry, that was ${furhat.voice.emphasis("not")} correct")
+
+            // Keep track of what users answered what question so that we don't ask the same user
+            users.current.quiz.questionsAsked.add(QuestionSet.current.text)
+
+
+        }
+
+        // Check if the game has ended and if not, goes to a new question
+        if (++rounds >= maxRounds) {
+            furhat.say("That was the last question")
+            goto(endSession())
+        } else {
+            goto(NewQuestion)
+        }
+    }
+
+    // The users answers that they don't know
+    onResponse<DontKnow> {
+        furhat.say("Too bad. Here comes the next question")
+        goto(NewQuestion)
+    }
+
+    onResponse<RequestRepeat> {
+        reentry()
+    }
+
+    onResponse<RequestRepeatQuestion> {
+        furhat.gesture(Gestures.BrowRaise)
+        furhat.ask(QuestionSet.current.text)
+    }
+
+    // The user wants to hear the options again
+    onResponse<RequestRepeatOptions> {
+        furhat.gesture(Gestures.Surprise)
+        random(
+            { furhat.ask("They are ${QuestionSet.current.getOptionsString()}") },
+            { furhat.ask(QuestionSet.current.getOptionsString()) }
+        )
+    }
+
+    // If we don't get any response, we assume the user was too slow
+    onNoResponse {
+        random(
+            { furhat.say("Too slow! Here comes the next question") },
+            { furhat.say("A bit too slow amigo! Get ready for the next question") }
+        )
+        goto(NewQuestion)
+    }
+
+    /* If we get a response that doesn't map to any alternative or any of the above handlers,
+        we track how many times this has happened in a row and give them two more attempts and
+        finally moving on if we still don't get it.
+     */
+    onResponse {
+        failedAttempts++
+        when (failedAttempts) {
+            1 -> furhat.ask("I didn't get that, sorry. Try again!")
+            2 -> {
+                furhat.say("Sorry, I still didn't get that")
+                furhat.ask("The options are ${QuestionSet.current.getOptionsString()}")
+            }
+            else -> {
+                furhat.say("Still couldn't get that. Let's try a new question")
+                goto(NewQuestion)
+            }
+        }
+    }
+}
+
+val NewQuestion : State = state(Options) {
+    onEntry {
+
+
+        if (!users.current.isAttendingFurhat) {
+            furhat.say {
+                random {
+                    block {
+                        +"But then I do want you to pay attention"
+                        +Gestures.BigSmile
+                    }
+                    +"Look at me, I'm captain now"
+                    +"Could you pay some attention to me"
+                }
+            }
+        }
+        // Ask new question
+        QuestionSet.next()
+        goto(AskQuestion)
+    }
+}
+/*
 fun teachingVocabulary(attempt: Int) : State = state(Options){
     var a = attempt
     onEntry {
@@ -164,7 +294,8 @@ fun teachingVocabulary(attempt: Int) : State = state(Options){
     }
 
     onResponse<Yes> {
-        goto(teachingVocabulary(a))
+       // goto(teachingVocabulary(a))
+        goto(NewQuestion)
     }
 
     onResponse<No> {
@@ -178,6 +309,8 @@ fun teachingVocabulary(attempt: Int) : State = state(Options){
     otherwise let the user try again if they want
      */
 }
+
+ */
 
 fun endSession() : State = state(Options) {
     onEntry {
@@ -193,7 +326,7 @@ fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
         furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
-        goto(teachingVocabulary(0))
+        goto(NewQuestion)
     }
 }
 
