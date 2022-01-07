@@ -85,115 +85,115 @@ val questionsEnglish = mutableListOf(
 
     Question("What is the word for one in Swedish",
         theme = "numbers",
-        answer = listOf("ett", "en")),
+        answer = listOf("ett", "en", "1")),
 
     Question("What is the word for two in Swedish",
         theme = "numbers",
-        answer = listOf("två")),
+        answer = listOf("två", "2")),
 
     Question("What is the word for three in Swedish",
         theme = "numbers",
-        answer = listOf("tre")),
+        answer = listOf("tre", "3")),
 
     Question("What is the word for four in Swedish",
         theme = "numbers",
-        answer = listOf("fyra")),
+        answer = listOf("fyra", "4")),
 
     Question("What is the word for five in Swedish",
         theme = "numbers",
-        answer = listOf("fem")),
+        answer = listOf("fem", "5")),
 
     Question("What is the word for six in Swedish",
         theme = "numbers",
-        answer = listOf("sex")),
+        answer = listOf("sex", "6")),
 
     Question("What is the word for seven in Swedish",
         theme = "numbers",
-        answer = listOf("sju")),
+        answer = listOf("sju", "7")),
 
     Question("What is the word for eight in Swedish",
         theme = "numbers",
-        answer = listOf("åtta")),
+        answer = listOf("åtta", "8")),
 
     Question("What is the word for nine in Swedish",
         theme = "numbers",
-        answer = listOf("nio")),
+        answer = listOf("nio", "9")),
 
     Question("What is the word for ten in Swedish",
         theme = "numbers",
-        answer = listOf("tio")),
+        answer = listOf("tio", "10")),
 
     Question("What is the word for eleven in Swedish",
         theme = "numbers",
-        answer = listOf("elva")),
+        answer = listOf("elva", "11")),
 
     Question("What is the word for twelve in Swedish",
         theme = "numbers",
-        answer = listOf("tolv")),
+        answer = listOf("tolv", "12")),
 
     Question("What is the word for thirteen in Swedish",
         theme = "numbers",
-        answer = listOf("tretton")),
+        answer = listOf("tretton", "13")),
 
     Question("What is the word for fourteen in Swedish",
         theme = "numbers",
-        answer = listOf("fjorton")),
+        answer = listOf("fjorton", "14")),
 
     Question("What is the word for fifteen in Swedish",
         theme = "numbers",
-        answer = listOf("femton")),
+        answer = listOf("femton", "15")),
 
     Question("What is the word for sixteen in Swedish",
         theme = "numbers",
-        answer = listOf("sexton")),
+        answer = listOf("sexton", "16")),
 
     Question("What is the word for seventeen in Swedish",
         theme = "numbers",
-        answer = listOf("sjuton")),
+        answer = listOf("sjutton", "17")),
 
     Question("What is the word for eighteen in Swedish",
         theme = "numbers",
-        answer = listOf("arton")),
+        answer = listOf("arton", "18")),
 
     Question("What is the word for nineteen in Swedish",
         theme = "numbers",
-        answer = listOf("nitton")),
+        answer = listOf("nitton", "19")),
 
     Question("What is the word for twenty in Swedish",
         theme = "numbers",
-        answer = listOf("tjugo")),
+        answer = listOf("tjugo", "20")),
 
     Question("What is the word for thirty in Swedish",
         theme = "numbers",
-        answer = listOf("trettio")),
+        answer = listOf("trettio", "30")),
 
     Question("What is the word for forty in Swedish",
         theme = "numbers",
-        answer = listOf("fyrtio")),
+        answer = listOf("fyrtio", "40")),
 
     Question("What is the word for fifty in Swedish",
         theme = "numbers",
-        answer = listOf("femtio")),
+        answer = listOf("femtio", "50")),
 
     Question("What is the word for sixty in Swedish",
         theme = "numbers",
-        answer = listOf("sextio")),
+        answer = listOf("sextio", "60")),
 
     Question("What is the word for seventy in Swedish",
         theme = "numbers",
-        answer = listOf("sjuttio")),
+        answer = listOf("sjuttio", "70")),
 
     Question("What is the word for eighty in Swedish",
         theme = "numbers",
-        answer = listOf("åttio")),
+        answer = listOf("åttio", "80")),
 
     Question("What is the word for ninety in Swedish",
         theme = "numbers",
-        answer = listOf("nittio")),
+        answer = listOf("nittio", "90")),
 
     Question("What is the word for hundred in Swedish",
         theme = "numbers",
-        answer = listOf("hundra")),
+        answer = listOf("hundra", "100")),
 
     Question("What is the word for book in Swedish",
         theme = "basics two",

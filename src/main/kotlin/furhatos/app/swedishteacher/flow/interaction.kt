@@ -17,11 +17,6 @@ in order to catch other types of responses
 */
 val Options =  state(Interaction){
 
-    onResponse<Goodbye> {
-        furhat.say("Alright, bye")
-        goto(Idle)
-    }
-
     onResponse<ChooseVocabularyType> {
         val vocabType = it.intent.vocabularyType
         val vocabTypeString = vocabType.toString().toLowerCase()
@@ -41,15 +36,9 @@ val Options =  state(Interaction){
         furhat.ask("What type of Swedish vocabulary do you want to practice?")
     }
 
-    /*
-    TO DO:
-    Allow the user to change to vocabulary type during learning
-    */
     onResponse<ChangeVocabularyTypes> {
         goto(vocabularyTypeRecommendation(""))
     }
-
-
 
     //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
@@ -86,25 +75,26 @@ fun vocabularyTypeRecommendation(previous: String) : State = state(Options){
         goto(registerVocabularyType(vocType))
     }
     onResponse<Yes> {
-
-    //TO DO:
-    // should take the suggestion and send it to the function below
         goto(registerVocabularyType(vocType))
 
     }
     onResponse<No> {
         goto(vocabularyTypeRecommendation(vocType))
     }
+
+    onResponse<DontKnow> {
+        goto(vocabularyTypeRecommendation(vocType))
+    }
 }
 
-val AskQuestion: State = state(Options) {
+val AskQuestion : State = state(parent = Options) {
     var failedAttempts = 0
 
     onEntry {
         failedAttempts = 0
 
         // Set speech rec phrases based on the current question's answers
-        furhat.setInputLanguage(Language.SWEDISH)
+        furhat.setInputLanguage(Language.SWEDISH, Language.ENGLISH_US)
         furhat.setSpeechRecPhrases(QuestionSet.current.speechPhrases)
 
         // Ask the question followed by the options
@@ -152,6 +142,9 @@ val AskQuestion: State = state(Options) {
         } else {
             goto(NewQuestion)
         }
+    }
+    onResponse<ChangeVocabularyTypes> {
+        goto(vocabularyTypeRecommendation(""))
     }
 
     // The users answers that they don't know

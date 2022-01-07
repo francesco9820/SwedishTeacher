@@ -1,6 +1,7 @@
 package furhatos.app.swedishteacher.flow
 
 import furhatos.flow.kotlin.*
+import furhatos.nlu.common.Goodbye
 import furhatos.util.*
 
 val Idle: State = state {
@@ -45,6 +46,11 @@ val Interaction: State = state {
 
     onUserEnter(instant = true) {
         furhat.glance(it)
+    }
+
+    onResponse<Goodbye> {
+        furhat.say("Alright, bye")
+        goto(Idle)
     }
 
     //Finish conversation after a delay. We can adjust the delay as we want
