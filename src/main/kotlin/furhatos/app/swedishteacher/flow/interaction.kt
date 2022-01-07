@@ -119,14 +119,16 @@ val AskQuestion: State = state(Options) {
     // User is answering with any of the alternatives
     onResponse<AnswerOption> {
         val answer = it.intent
-
+        println(it.intent)
         // If the user answers correct, we up the user's score and congratulates the user
         if (answer.correct) {
+            println(answer.correct)
             furhat.gesture(Gestures.Smile)
             users.current.quiz.score++
+            println(users.current.quiz.score)
             random(
-                { furhat.say("Great! That was the ${furhat.voice.emphasis("right")}  answer, you now have a score of ${users.current.quiz.score}") },
-                { furhat.say("that was ${furhat.voice.emphasis("correct")}, you now have a score of ${users.current.quiz.score}") }
+                { furhat.say("Great! That was the right answer, you now have a score of ${users.current.quiz.score}") },
+                { furhat.say("that was correct you now have a score of ${users.current.quiz.score}") }
             )
             /*
             If the user answers incorrect, we give another user the chance of answering if one is present in the game.
@@ -134,7 +136,7 @@ val AskQuestion: State = state(Options) {
              */
         } else {
             furhat.gesture(Gestures.BrowFrown)
-            furhat.say("Sorry, that was ${furhat.voice.emphasis("not")} correct")
+            furhat.say("Sorry, that was not correct")
 
             // Keep track of what users answered what question so that we don't ask the same user
             users.current.quiz.questionsAsked.add(QuestionSet.current.text)
@@ -221,7 +223,8 @@ val NewQuestion : State = state(Options) {
             }
         }
         // Ask new question
-        QuestionSet.next()
+        println(users.current.currentVocabularyType.vocabType)
+        QuestionSet.next(users.current.currentVocabularyType.vocabType)
         goto(AskQuestion)
     }
 }
