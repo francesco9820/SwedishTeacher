@@ -118,8 +118,8 @@ val AskQuestion : State = state(parent = Options) {
             users.current.quiz.score++
             println(users.current.quiz.score)
             random(
-                { furhat.say("Great! That was the right answer, you now have a score of ${users.current.quiz.score}") },
-                { furhat.say("that was correct you now have a score of ${users.current.quiz.score}") }
+                { furhat.say("Great! That was the right answer, your score is now ${users.current.quiz.score}") },
+                { furhat.say("Yes ${users.current.information.name}! That is correct! Your score is ${users.current.quiz.score}") }
             )
             /*
             If the user answers incorrect, we give another user the chance of answering if one is present in the game.
@@ -137,8 +137,8 @@ val AskQuestion : State = state(parent = Options) {
 
         // Check if the game has ended and if not, goes to a new question
         if (++rounds >= maxRounds) {
-            furhat.say("That was the last question")
-            goto(endSession())
+            furhat.say("Let's change the type of words")
+            goto(vocabularyTypeRecommendation(users.current.currentVocabularyType.vocabType))
         } else {
             goto(NewQuestion)
         }
@@ -175,7 +175,7 @@ val AskQuestion : State = state(parent = Options) {
     onNoResponse {
         random(
             { furhat.say("Too slow! Here comes the next question") },
-            { furhat.say("A bit too slow amigo! Get ready for the next question") }
+            { furhat.say("A bit too slow! Get ready for the next question") }
         )
         goto(NewQuestion)
     }
@@ -190,7 +190,10 @@ val AskQuestion : State = state(parent = Options) {
             1 -> furhat.ask("I didn't get that, sorry. Try again!")
             2 -> {
                 furhat.say("Sorry, I still didn't get that")
-                furhat.ask("The right answer is ${QuestionSet.current.getOptionsString()}")
+                furhat.say("The right answer is")
+                furhat.setVoice(Language.SWEDISH, Gender.MALE)
+                furhat.ask("${QuestionSet.current.getOptionsString()}")
+                furhat.setVoice(Language.ENGLISH_US, Gender.MALE)
             }
             else -> {
                 furhat.say("Still couldn't get that. Let's try a new question")
@@ -309,21 +312,12 @@ fun teachingVocabulary(attempt: Int) : State = state(Options){
 
  */
 
-fun endSession() : State = state(Options) {
-    onEntry {
-        furhat.say("We had a lot of fun together. This is the end of our session. See you another time!")
-        furhat.setInputLanguage(Language.ENGLISH_US)
-        goto(Idle)
-    }
-}
-
 
 fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
     onEntry {
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
         println( users.current.currentVocabularyType.vocabType)
-        furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
         goto(NewQuestion)
     }
 }
@@ -366,13 +360,17 @@ val RequestName: State = state(Interaction){
         var name = it.intent?.value
         if (name != null) {
             users.current.information.name = name
+            furhat.say("You have a lovely name " + name)
+        }else {
+            users.current.information.name = "buddy"
         }
-        furhat.say("You have a lovely name " + name)
+
         goto(IntroVocabulary)
     }
 
     onResponse{
         furhat.say("Sorry, I am pretty bad with names actually. I’ll just call you buddy.")
+        users.current.information.name = "buddy"
         goto(IntroVocabulary)
     }
 }

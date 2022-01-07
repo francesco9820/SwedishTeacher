@@ -1,0 +1,5 @@
+14:46:03 [Skill] INFO  Skill:138 - Connecting to Furhat server on 0.0.0.0:1932
+14:46:03 [SwedishteacherSkill] INFO  SwedishteacherSkill:165 - Starting skill
+14:46:03 [EventSystem] WARN  FurhatSpeech:136 - Cannot find voice Joey (en-US) - Amazon Polly
+14:46:03 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (en-US) - Unknown
+14:46:38 [EventSystem] INFO  SwedishteacherSkill:183 - Terminating skill
