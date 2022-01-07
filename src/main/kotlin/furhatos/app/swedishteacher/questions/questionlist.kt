@@ -85,7 +85,7 @@ val questionsEnglish = mutableListOf(
 
     Question("What is the word for one in Swedish",
         theme = "numbers",
-        answer = listOf("ett")),
+        answer = listOf("ett", "en")),
 
     Question("What is the word for two in Swedish",
         theme = "numbers",
@@ -97,6 +97,178 @@ val questionsEnglish = mutableListOf(
 
     Question("What is the word for four in Swedish",
         theme = "numbers",
-        answer = listOf("fyra"))
+        answer = listOf("fyra")),
+
+    Question("What is the word for five in Swedish",
+        theme = "numbers",
+        answer = listOf("fem")),
+
+    Question("What is the word for six in Swedish",
+        theme = "numbers",
+        answer = listOf("sex")),
+
+    Question("What is the word for seven in Swedish",
+        theme = "numbers",
+        answer = listOf("sju")),
+
+    Question("What is the word for eight in Swedish",
+        theme = "numbers",
+        answer = listOf("åtta")),
+
+    Question("What is the word for nine in Swedish",
+        theme = "numbers",
+        answer = listOf("nio")),
+
+    Question("What is the word for ten in Swedish",
+        theme = "numbers",
+        answer = listOf("tio")),
+
+    Question("What is the word for eleven in Swedish",
+        theme = "numbers",
+        answer = listOf("elva")),
+
+    Question("What is the word for twelve in Swedish",
+        theme = "numbers",
+        answer = listOf("tolv")),
+
+    Question("What is the word for thirteen in Swedish",
+        theme = "numbers",
+        answer = listOf("tretton")),
+
+    Question("What is the word for fourteen in Swedish",
+        theme = "numbers",
+        answer = listOf("fjorton")),
+
+    Question("What is the word for fifteen in Swedish",
+        theme = "numbers",
+        answer = listOf("femton")),
+
+    Question("What is the word for sixteen in Swedish",
+        theme = "numbers",
+        answer = listOf("sexton")),
+
+    Question("What is the word for seventeen in Swedish",
+        theme = "numbers",
+        answer = listOf("sjuton")),
+
+    Question("What is the word for eighteen in Swedish",
+        theme = "numbers",
+        answer = listOf("arton")),
+
+    Question("What is the word for nineteen in Swedish",
+        theme = "numbers",
+        answer = listOf("nitton")),
+
+    Question("What is the word for twenty in Swedish",
+        theme = "numbers",
+        answer = listOf("tjugo")),
+
+    Question("What is the word for thirty in Swedish",
+        theme = "numbers",
+        answer = listOf("trettio")),
+
+    Question("What is the word for forty in Swedish",
+        theme = "numbers",
+        answer = listOf("fyrtio")),
+
+    Question("What is the word for fifty in Swedish",
+        theme = "numbers",
+        answer = listOf("femtio")),
+
+    Question("What is the word for sixty in Swedish",
+        theme = "numbers",
+        answer = listOf("sextio")),
+
+    Question("What is the word for seventy in Swedish",
+        theme = "numbers",
+        answer = listOf("sjuttio")),
+
+    Question("What is the word for eighty in Swedish",
+        theme = "numbers",
+        answer = listOf("åttio")),
+
+    Question("What is the word for ninety in Swedish",
+        theme = "numbers",
+        answer = listOf("nittio")),
+
+    Question("What is the word for hundred in Swedish",
+        theme = "numbers",
+        answer = listOf("hundra")),
+
+    Question("What is the word for book in Swedish",
+        theme = "basics two",
+        answer = listOf("bok")),
+
+    Question("What is the word for letter in Swedish",
+        theme = "basics two",
+        answer = listOf("brev")),
+
+    Question("What is the word for milk in Swedish",
+        theme = "basics two",
+        answer = listOf("mjölk")),
+
+    Question("What is the word for rice in Swedish",
+        theme = "basics two",
+        answer = listOf("ris")),
+
+    Question("What is the word for sandwich in Swedish",
+        theme = "basics two",
+        answer = listOf("smörgås")),
+
+    Question("What is the word for newspaper in Swedish",
+        theme = "basics two",
+        answer = listOf("tidning")),
+
+    Question("What is the word for he in Swedish",
+        theme = "basics two",
+        answer = listOf("han")),
+
+    Question("What is the word for she in Swedish",
+        theme = "basics two",
+        answer = listOf("hon")),
+
+    Question("What is the word for man in Swedish",
+        theme = "basics one",
+        answer = listOf("man")),
+
+    Question("What is the word for woman in Swedish",
+        theme = "basics one",
+        answer = listOf("kvinna")),
+
+    Question("What is the word for girl in Swedish",
+        theme = "basics one",
+        answer = listOf("flicka")),
+
+    Question("What is the word for boy in Swedish",
+        theme = "basics one",
+        answer = listOf("pojke")),
+
+    Question("What is the word for water in Swedish",
+        theme = "basics one",
+        answer = listOf("vatten")),
+
+    Question("What is the word for eating in Swedish",
+        theme = "basics one",
+        answer = listOf("äta", "äter")),
+
+    Question("What is the word for drinking in Swedish",
+        theme = "basics one",
+        answer = listOf("dricker", "dricka")),
+
+    Question("What is the word for reading in Swedish",
+        theme = "basics one",
+        answer = listOf("läser", "läsa")),
+
+    Question("What is the word for menu in Swedish",
+        theme = "basics one",
+        answer = listOf("meny")),
+
+    Question("What is the word for I in Swedish",
+        theme = "basics one",
+        answer = listOf("jag")),
+
+    Question("What is the word for and in Swedish",
+        theme = "basics one",
+        answer = listOf("och"))
 )
 

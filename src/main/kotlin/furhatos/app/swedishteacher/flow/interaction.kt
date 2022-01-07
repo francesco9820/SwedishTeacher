@@ -196,7 +196,7 @@ val AskQuestion: State = state(Options) {
             1 -> furhat.ask("I didn't get that, sorry. Try again!")
             2 -> {
                 furhat.say("Sorry, I still didn't get that")
-                furhat.ask("The options are ${QuestionSet.current.getOptionsString()}")
+                furhat.ask("The right answer is ${QuestionSet.current.getOptionsString()}")
             }
             else -> {
                 furhat.say("Still couldn't get that. Let's try a new question")
@@ -328,6 +328,7 @@ fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
     onEntry {
         //storing the chosen vocabulary type on the user profile
         users.current.currentVocabularyType.vocabType = vocabularyType
+        println( users.current.currentVocabularyType.vocabType)
         furhat.say("I am now ready to start teaching you ${users.current.currentVocabularyType.vocabType}")
         goto(NewQuestion)
     }

@@ -11,7 +11,7 @@ import furhatos.util.Language
 //Vocabulary type entity
 class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
     override fun getEnum(lang: Language): List<String> {
-        return listOf("colors", "clothing items", "numbers")
+        return listOf("colors", "clothing items", "numbers", "basics one", "basics two")
     }
 }
 
@@ -50,7 +50,9 @@ class ChangeVocabularyTypes: Intent() {
         return listOf("I would like to change vocabulary",
             "Can I choose another vocabulary?",
             "Is it possible to change vocabulary?",
-            "Can we change vocabulary?"
+            "Can we change vocabulary?",
+            "Change vocabulary",
+            "another vocabulary"
         )
     }
 }
