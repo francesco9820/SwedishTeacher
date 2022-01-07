@@ -24,13 +24,14 @@ val Options =  state(Interaction){
 
     onResponse<ChooseVocabularyType> {
         val vocabType = it.intent.vocabularyType
+        val vocabTypeString = vocabType.toString().toLowerCase()
         if (vocabType != null) {
             random(
                 {furhat.say("${vocabType.text}, that is a decent choice.")},
                 {furhat.say("Nice, I am pretty good at ${vocabType.text}!")},
                 {furhat.say("Oh wow, ${vocabType.text} you say. Let's go for it")}
             )
-            goto(registerVocabularyType(vocabType.toString()))
+            goto(registerVocabularyType(vocabTypeString))
         }
         else {
             propagate()
