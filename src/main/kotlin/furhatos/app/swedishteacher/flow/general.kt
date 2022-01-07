@@ -26,8 +26,6 @@ val Idle: State = state {
 
 val maxRounds = 5
 var rounds = 0
-var shouldChangeUser = true
-var playing = false
 
 val Interaction: State = state {
 
@@ -54,7 +52,7 @@ val Interaction: State = state {
     }
 
     //Finish conversation after a delay. We can adjust the delay as we want
-    onTime(delay=120000) {
+    onTime(delay=6000000) {
         furhat.say("Alright, your Swedish is not too bad. " +
                 "There is still some work to be done though. " +
                 "But I am a bit tired now and need my beauty sleep. " +
