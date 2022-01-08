@@ -11,7 +11,7 @@ import furhatos.util.Language
 //Vocabulary type entity
 class VocabularyType : EnumEntity(stemming = true, speechRecPhrases = true){
     override fun getEnum(lang: Language): List<String> {
-        return listOf("colors", "clothing items", "numbers", "basics one", "basics two")
+        return listOf("colors", "clothing items", "numbers", "basics one")
     }
 }
 

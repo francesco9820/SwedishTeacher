@@ -122,10 +122,10 @@ try:
 			predicted_emotion = emotions[max_index]
 			second_predicted_emotion = emotions[second_index]
 			with open("predicted_emotion.txt", "a") as f:
-				f.write(predicted_emotion)
+				f.write(second_predicted_emotion)
 				f.write("\n")
 
-			cv2.putText(RGB_img, predicted_emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+			cv2.putText(RGB_img, second_predicted_emotion, (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
 		resized_img = cv2.resize(RGB_img, (1000, 675))
 		cv2.imshow('Facial emotion analysis ',resized_img)

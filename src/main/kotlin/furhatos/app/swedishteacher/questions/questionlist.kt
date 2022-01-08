@@ -196,31 +196,31 @@ val questionsEnglish = mutableListOf(
         answer = listOf("hundra", "100")),
 
     Question("What is the word for book in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("bok")),
 
     Question("What is the word for letter in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("brev")),
 
     Question("What is the word for milk in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("mjölk")),
 
     Question("What is the word for rice in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("ris")),
 
     Question("What is the word for sandwich in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("smörgås")),
 
     Question("What is the word for newspaper in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("tidning")),
 
     Question("What is the word for he in Swedish",
-        theme = "basics two",
+        theme = "basics one",
         answer = listOf("han")),
 
     Question("What is the word for she in Swedish",

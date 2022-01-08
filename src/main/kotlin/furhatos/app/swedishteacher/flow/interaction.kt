@@ -13,7 +13,7 @@ import furhatos.util.Gender
 import furhatos.util.Language
 import java.io.File
 
-val maxRounds = 10
+val maxRounds = 7
 var rounds = 0
 /*
 We can use Options state as a parent
