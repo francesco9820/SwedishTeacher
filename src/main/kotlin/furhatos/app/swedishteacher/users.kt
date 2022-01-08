@@ -1,6 +1,5 @@
-package furhatos.app.swedishteacher.flow
+package furhatos.app.swedishteacher
 
-import furhatos.app.swedishteacher.nlu.*
 import furhatos.records.Record
 import furhatos.records.User
 

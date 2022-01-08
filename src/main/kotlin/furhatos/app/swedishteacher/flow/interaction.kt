@@ -1,9 +1,11 @@
 package furhatos.app.swedishteacher.flow
 
-import cc.mallet.util.CommandOption
+import furhatos.app.swedishteacher.currentVocabularyType
+import furhatos.app.swedishteacher.information
 import furhatos.app.swedishteacher.questions.QuestionSet
 import furhatos.nlu.common.*
 import furhatos.app.swedishteacher.nlu.*
+import furhatos.app.swedishteacher.quiz
 import furhatos.flow.kotlin.*
 import furhatos.gestures.Gestures
 import furhatos.skills.emotions.UserGestures
@@ -11,6 +13,8 @@ import furhatos.util.Gender
 import furhatos.util.Language
 import java.io.File
 
+val maxRounds = 10
+var rounds = 0
 /*
 We can use Options state as a parent
 in order to catch other types of responses
@@ -42,15 +46,6 @@ val Options =  state(Interaction){
 
     //If the user wants to know what vocabulary words are available
     onResponse<RequestVocabularyTypes> {
-        var fileContents = readFileAsLinesUsingReadLines("Video_Chat_Emotion_Capture/predicted_emotion.txt")
-        var emotion = fileContents.last()
-        if(emotion.equals("fear")){
-            furhat.say("There is no need to be scared")
-        }else if(emotion.equals("sad")){
-            furhat.say("Don't be sad you should be happy to practise Swedish with me")
-        }else if(emotion.equals("happy")){
-            furhat.say("Seeing you happy makes me really happy as well!")
-        }
         furhat.say("I know so many words")
         furhat.say("We could practice ${VocabularyType().getEnum(Language.ENGLISH_US).joinToString(", ")}")
         furhat.ask("Which one would you want to practice?")
@@ -92,9 +87,19 @@ val AskQuestion : State = state(parent = Options) {
 
     onEntry {
         failedAttempts = 0
-
+        var fileContents = readFileAsLinesUsingReadLines("Video_Chat_Emotion_Capture/predicted_emotion.txt")
+        var emotion = fileContents.last()
+        //println(emotion)
+        if(emotion.equals("fear")){
+            furhat.gesture(Gestures.ExpressSad(duration=4.0))
+            //furhat.gesture(Gestures.BigSmile(duration=5.0))
+        }else if(emotion.equals("sad")){
+            furhat.gesture(Gestures.Surprise(duration=4.0))
+        }else if(emotion.equals("happy")){
+            furhat.gesture(Gestures.BigSmile(duration=4.0))
+        }
         // Set speech rec phrases based on the current question's answers
-        furhat.setInputLanguage(Language.SWEDISH, Language.ENGLISH_US)
+        furhat.setInputLanguage(Language.SWEDISH)
         furhat.setSpeechRecPhrases(QuestionSet.current.speechPhrases)
 
         // Ask the question followed by the options
@@ -110,13 +115,13 @@ val AskQuestion : State = state(parent = Options) {
     // User is answering with any of the alternatives
     onResponse<AnswerOption> {
         val answer = it.intent
-        println(it.intent)
+        //println(it.intent)
         // If the user answers correct, we up the user's score and congratulates the user
         if (answer.correct) {
-            println(answer.correct)
+            //println(answer.correct)
             furhat.gesture(Gestures.Smile)
             users.current.quiz.score++
-            println(users.current.quiz.score)
+            //println(users.current.quiz.score)
             random(
                 { furhat.say("Great! That was the right answer, your score is now ${users.current.quiz.score}") },
                 { furhat.say("Yes ${users.current.information.name}! That is correct! Your score is ${users.current.quiz.score}") }
@@ -134,14 +139,10 @@ val AskQuestion : State = state(parent = Options) {
 
 
         }
-
+        // println(rounds)
+        // println(maxRounds)
         // Check if the game has ended and if not, goes to a new question
-        if (++rounds >= maxRounds) {
-            furhat.say("Let's change the type of words")
-            goto(vocabularyTypeRecommendation(users.current.currentVocabularyType.vocabType))
-        } else {
-            goto(NewQuestion)
-        }
+        goto(NewQuestion)
     }
     onResponse<ChangeVocabularyTypes> {
         goto(vocabularyTypeRecommendation(""))
@@ -149,7 +150,7 @@ val AskQuestion : State = state(parent = Options) {
 
     // The users answers that they don't know
     onResponse<DontKnow> {
-        furhat.say("Too bad. Here comes the next question")
+        furhat.say("Too bad. Let's move on")
         goto(NewQuestion)
     }
 
@@ -174,8 +175,8 @@ val AskQuestion : State = state(parent = Options) {
     // If we don't get any response, we assume the user was too slow
     onNoResponse {
         random(
-            { furhat.say("Too slow! Here comes the next question") },
-            { furhat.say("A bit too slow! Get ready for the next question") }
+            { furhat.say("Too slow! Let's proceed") },
+            { furhat.say("A bit too slow! Let's go ahead") }
         )
         goto(NewQuestion)
     }
@@ -187,16 +188,19 @@ val AskQuestion : State = state(parent = Options) {
     onResponse {
         failedAttempts++
         when (failedAttempts) {
-            1 -> furhat.ask("I didn't get that, sorry. Try again!")
+            1 -> {
+                furhat.ask("I didn't get that, sorry. Try again!")
+            }
             2 -> {
                 furhat.say("Sorry, I still didn't get that")
                 furhat.say("The right answer is")
                 furhat.setVoice(Language.SWEDISH, Gender.MALE)
-                furhat.ask("${QuestionSet.current.getOptionsString()}")
+                furhat.say("${QuestionSet.current.getOptionsString()}")
                 furhat.setVoice(Language.ENGLISH_US, Gender.MALE)
+                furhat.ask("Try to repeat that")
             }
             else -> {
-                furhat.say("Still couldn't get that. Let's try a new question")
+                furhat.say("Still couldn't get that. Let's proceed")
                 goto(NewQuestion)
             }
         }
@@ -205,7 +209,9 @@ val AskQuestion : State = state(parent = Options) {
 
 val NewQuestion : State = state(Options) {
     onEntry {
-
+        if (++rounds >= maxRounds) {
+            goto(endSession())
+        }
 
         if (!users.current.isAttendingFurhat) {
             furhat.say {
@@ -225,6 +231,8 @@ val NewQuestion : State = state(Options) {
         goto(AskQuestion)
     }
 }
+
+
 /*
 fun teachingVocabulary(attempt: Int) : State = state(Options){
     var a = attempt
@@ -311,6 +319,13 @@ fun teachingVocabulary(attempt: Int) : State = state(Options){
 }
 
  */
+fun endSession() : State = state(Options) {
+    onEntry {
+        furhat.say("We had a lot of fun together. This is the end of our session. See you another time!")
+        furhat.setInputLanguage(Language.ENGLISH_US)
+        goto(Idle)
+    }
+}
 
 
 fun registerVocabularyType(vocabularyType: String) : State = state(Options) {
@@ -345,15 +360,6 @@ val IntroVocabulary : State = state(Options){
 //name still needs to be stored on the user.
 val RequestName: State = state(Interaction){
     onEntry {
-        var fileContents = readFileAsLinesUsingReadLines("Video_Chat_Emotion_Capture/predicted_emotion.txt")
-        var emotion = fileContents.last()
-        if(emotion.equals("fear")){
-            furhat.say("There is no need to be scared")
-        }else if(emotion.equals("sad")){
-            furhat.say("Don't be sad you should be happy to practise Swedish with me")
-        }else if(emotion.equals("happy")){
-            furhat.say("Seeing you happy makes me really happy as well!")
-        }
         furhat.ask("What may I call you?")
     }
     onResponse<PersonName> {

@@ -24,9 +24,6 @@ val Idle: State = state {
     }
 }
 
-val maxRounds = 10
-var rounds = 0
-
 val Interaction: State = state {
 
     onUserLeave(instant = true) {

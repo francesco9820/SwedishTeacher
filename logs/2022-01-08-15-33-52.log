@@ -1,0 +1,8 @@
+15:33:53 [Skill] INFO  Skill:138 - Connecting to Furhat server on 192.168.1.161:1932
+15:33:54 [SwedishteacherSkill] INFO  SwedishteacherSkill:165 - Starting skill
+15:34:53 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (sv-SE) - Unknown
+15:35:21 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (sv-SE) - Unknown
+15:36:13 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (sv-SE) - Unknown
+15:36:38 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (sv-SE) - Unknown
+15:37:00 [SwedishteacherSkill] WARN  FurhatSpeech:285 - Could not find voice: ? (sv-SE) - Unknown
+15:37:22 [EventSystem] INFO  SwedishteacherSkill:183 - Terminating skill
